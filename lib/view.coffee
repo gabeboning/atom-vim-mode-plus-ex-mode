@@ -63,6 +63,7 @@ class View extends SelectListView
     @panel?.hide()
 
   getFallBackItemsFromQuery: (query) ->
+    console.log("get items")
     items = []
 
     if /^!/.test(query)
@@ -70,7 +71,7 @@ class View extends SelectListView
       items = @getItemsForKind('toggleCommands')
       items = fuzzaldrin.filter(items, filterQuery, key: @getFilterKey())
 
-    else if /^\d/.test(query)
+    else if /^[+-\d]/.test(query)
       name = null
 
       if match = query.match(/^(\d+)+$/)
@@ -84,6 +85,10 @@ class View extends SelectListView
       else if match = query.match(/^(\d+):(\d+)$/)
         name = 'moveToLineAndColumn'
         options = {row: Number(match[1]), column: Number(match[2])}
+        
+      else if match = query.match(/^([+-]\d+)$/)
+        name = 'moveToRelativeLine'
+        options = {offset: Number(match[1])}
 
       if name?
         item = @getItem('numberCommands', name)
