@@ -63,6 +63,7 @@ class View extends SelectListView
     @panel?.hide()
 
   getFallBackItemsFromQuery: (query) ->
+    console.log("get items")
     items = []
 
     if /^!/.test(query)
